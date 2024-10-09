@@ -1,6 +1,7 @@
 import csv
 import os
 csvpath = os.path.join('Resources', 'budget_data.csv')
+file_to_output = os.path.join("analysis", "budget_analysis.txt")
 with open(csvpath) as f:
     csvreader = csv.reader(f)
     next(csvreader)
@@ -27,8 +28,15 @@ with open(csvpath) as f:
         if first == 0:
             first = int(line[1])
     average = (last-first)/(count-1)
-    print("Total Months:", count)
-    print(f"Total: ${total}")
-    print("Average Change: ${:.2f}".format(average))
-    print(f"Greatest Increase in Profits: {diff_max_date} (${diff_max})" )
-    print(f"Greatest Decrease in Profits: {diff_min_date} (${diff_min})" )
+    output = (
+    f"Financial Analysis\n"
+    f"----------------------------\n"
+    f"Total Months: {count}\n"
+    f"Total: ${total}\n"
+    f"Average Change: ${average:.2f}\n"
+    f"Greatest Increase in Profits: {diff_max_date} (${diff_max})\n"
+    f"Greatest Decrease in Profits: {diff_min_date} (${diff_min})\n"
+    )
+    print(output)
+    with open(file_to_output, "w") as txt_file:
+        txt_file.write(output)
