@@ -1,19 +1,34 @@
+# -*- coding: UTF-8 -*-
+"""PyBank Homework Starter File."""
+
+# Dependencies
 import csv
 import os
-csvpath = os.path.join('Resources', 'budget_data.csv')
-file_to_output = os.path.join("analysis", "budget_analysis.txt")
-with open(csvpath) as f:
+
+# Define variables to track the financial data
+count = 0
+total = 0
+first = 0
+last = 0
+diff = 0
+diff_min = 0
+diff_min_date = ""
+diff_max = 0
+diff_max_date = ""
+
+# Files to load and output (update with correct file paths)
+file_to_load = os.path.join("Resources", "budget_data.csv")  # Input file path
+file_to_output = os.path.join("analysis", "budget_analysis.txt")  # Output file path
+
+# Open and Read the file line by line
+with open(file_to_load) as f:
     csvreader = csv.reader(f)
+    
+    # Skip the header row
     next(csvreader)
-    count = 0
-    total = 0
-    first = 0
-    last = 0
-    diff = 0
-    diff_min = 0
-    diff_min_date = ""
-    diff_max = 0
-    diff_max_date = ""
+    
+    # Read file line by line and count the number of lines
+    # Keep track of minimum diff and maximum diff and corresponding dates  
     for line in csvreader:
         count = count + 1
         total = total + int(line[1])
@@ -27,7 +42,11 @@ with open(csvpath) as f:
         last = int(line[1])
         if first == 0:
             first = int(line[1])
+
+    # Calculate average           
     average = (last-first)/(count-1)
+    
+    # Render output
     output = (
     f"Financial Analysis\n"
     f"----------------------------\n"
@@ -38,5 +57,7 @@ with open(csvpath) as f:
     f"Greatest Decrease in Profits: {diff_min_date} (${diff_min})\n"
     )
     print(output)
+
+    # Save output to txt file
     with open(file_to_output, "w") as txt_file:
         txt_file.write(output)
